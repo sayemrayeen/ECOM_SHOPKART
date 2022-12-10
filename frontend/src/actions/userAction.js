@@ -23,7 +23,7 @@ import {
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
-} from "../constants/userConstatnts";
+} from "../constants/userConstants";
 import axios from "axios";
 import { ORDER_LIST_MY_RESET } from "../constants/orderConstants";
 

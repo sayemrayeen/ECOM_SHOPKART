@@ -2,21 +2,21 @@ import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import { Container } from "react-bootstrap";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import HomeScreen from "./screens/HomeScreen";
-import ProductScreen from "./screens/ProductScreen";
-import CartScreen from "./screens/CartScreen";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import ShippingScreen from "./screens/ShippingScreen";
-import PaymentScreen from "./screens/PaymentScreen";
-import PlaceOrderScreen from "./screens/PlaceOrderScreen";
-import OrderScreen from "./screens/OrderScreen";
+import HomeScreen from "./Screens/HomeScreen";
+import ProductScreen from "./Screens/ProductScreen";
+import CartScreen from "./Screens/CartScreen";
+import LoginScreen from "./Screens/LoginScreen";
+import RegisterScreen from "./Screens/RegisterScreen";
+import ProfileScreen from "./Screens/ProfileScreen";
+import ShippingScreen from "./Screens/ShippingScreen";
+import PaymentScreen from "./Screens/PayementScreen";
+import PlaceOrderScreen from "./Screens/PlaceOrderScreen";
+import OrderScreen from "./Screens/OrderScreen";
 import UserListScreen from "./Components/UserListScreen";
-import UserEditScreen from "./screens/UserEditScreen";
-import ProductListScreen from "./screens/ProductListScreen";
-import ProductEditScreen from "./screens/ProductEditScreen";
-import OrderListScreen from "./screens/OrderListScreen";
+import UserEditScreen from "./Screens/UserEditScreen";
+import ProductListScreen from "./Screens/ProductListScreen";
+import ProductEditScreen from "./Screens/ProductEditScreen";
+import OrderListScreen from "./Screens/OrderListScreen";
 
 function App() {
   return (

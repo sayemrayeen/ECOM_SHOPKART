@@ -17,7 +17,7 @@ import {
   listProductDetails,
   createProductReview,
 } from "../actions/productsActions";
-import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstatnts";
+import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
 import { useParams } from "react-router-dom";
 import Meta from "../Components/Meta";
 

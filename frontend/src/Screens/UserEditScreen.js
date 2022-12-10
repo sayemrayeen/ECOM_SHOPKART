@@ -6,7 +6,7 @@ import Message from "../Components/Message";
 import Loader from "../Components/Loader";
 import FormContainer from "../Components/FormContainer";
 import { getUserDetails, updateUser } from "../actions/userAction";
-import { USER_UPDATE_RESET } from "../constants/userConstatnts";
+import { USER_UPDATE_RESET } from "../constants/userConstants";
 
 const UserEditScreen = () => {
   const { id } = useParams();

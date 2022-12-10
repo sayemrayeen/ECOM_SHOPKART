@@ -7,7 +7,7 @@ import Message from "../Components/Message";
 import Loader from "../Components/Loader";
 import FormContainer from "../Components/FormContainer";
 import { listProductDetails, updateProduct } from "../actions/productsActions";
-import { PRODUCT_UPDATE_RESET } from "../constants/productConstatnts";
+import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
 
 const ProductEditScreen = () => {
   const { id } = useParams();

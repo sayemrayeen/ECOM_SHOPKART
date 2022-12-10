@@ -10,7 +10,7 @@ import {
   deleteProduct,
   createProduct,
 } from "../actions/productsActions";
-import { PRODUCT_CREATE_RESET } from "../constants/productConstatnts";
+import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 

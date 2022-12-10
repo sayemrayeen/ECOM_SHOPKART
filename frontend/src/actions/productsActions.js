@@ -20,7 +20,7 @@ import {
   PRODUCT_TOP_REQUEST,
   PRODUCT_TOP_SUCCESS,
   PRODUCT_TOP_FAIL,
-} from "../constants/productConstatnts";
+} from "../constants/productConstants";
 
 import axios from "axios";
 
