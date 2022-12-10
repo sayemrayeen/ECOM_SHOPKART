@@ -1,0 +1,15 @@
+{
+  "name": "shopkart",
+  "version": "1.0.0",
+  "description": "Mern Shopping cart app",
+  "main": "Server.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sayem",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
