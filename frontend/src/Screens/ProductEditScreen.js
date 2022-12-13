@@ -135,14 +135,15 @@ const ProductEditScreen = () => {
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
-              <Form.File
-                id="image-file"
+              <Form.Control
+                type="file"
                 label="Choose File"
-                custom
+                custom="true"
                 onChange={uploadFileHandler}
-              ></Form.File>
+              ></Form.Control>
               {uploading && <Loader />}
             </Form.Group>
+            {uploading && <Loader />}
 
             <Form.Group controlId="brand">
               <Form.Label>Brand</Form.Label>
@@ -151,7 +152,7 @@ const ProductEditScreen = () => {
                 placeholder="Enter brand"
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
 
             <Form.Group controlId="countInStock">
@@ -184,7 +185,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="primary" className="mt-3">
               Update
             </Button>
           </Form>
