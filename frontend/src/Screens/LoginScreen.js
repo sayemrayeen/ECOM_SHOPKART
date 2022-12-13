@@ -58,7 +58,7 @@ const LoginScreen = () => {
           ></Form.Control>
         </Form.Group>
 
-        <Button className="my-3" type="submit" variant="primary">
+        <Button type="submit" variant="primary" className="mt-3">
           Sign In
         </Button>
       </Form>
@@ -74,5 +74,4 @@ const LoginScreen = () => {
     </FormContainer>
   );
 };
-
 export default LoginScreen;

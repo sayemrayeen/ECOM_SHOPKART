@@ -41,7 +41,7 @@ const UserEditScreen = () => {
         setIsAdmin(user.isAdmin);
       }
     }
-  }, [dispatch, user, history, userId, successUpdate]);
+  }, [dispatch, history, userId, user, successUpdate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -92,7 +92,7 @@ const UserEditScreen = () => {
               ></Form.Check>
             </Form.Group>
 
-            <Button type="submit" className="my-3" variant="primary">
+            <Button type="submit" variant="primary">
               Update
             </Button>
           </Form>

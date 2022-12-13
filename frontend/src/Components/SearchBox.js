@@ -16,15 +16,15 @@ const SearchBox = () => {
   };
 
   return (
-    <Form onSubmit={submitHandler} className="d-flex">
+    <Form onSubmit={submitHandler} inline="true" className="d-flex">
       <Form.Control
         type="text"
-        className="me-2"
         name="q"
         onChange={(e) => setKeyword(e.target.value)}
         placeholder="Search Products..."
-      />
-      <Button type="submit" variant="outline-success">
+        className="me-2"
+      ></Form.Control>
+      <Button type="submit" variant="outline-success" className="p-2">
         Search
       </Button>
     </Form>

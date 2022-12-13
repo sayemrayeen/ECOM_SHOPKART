@@ -6,18 +6,23 @@ import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../Components/Message";
 import Loader from "../Components/Loader";
-import { getOrderDetails, deliverOrder } from "../actions/orderActions";
+import {
+  getOrderDetails,
+  payOrder,
+  deliverOrder,
+} from "../actions/orderActions";
 import {
   ORDER_PAY_RESET,
   ORDER_DELIVER_RESET,
 } from "../constants/orderConstants";
 
 const OrderScreen = () => {
+  const history = useNavigate();
   const { id } = useParams();
   const orderId = id;
-  const history = useNavigate();
-  const dispatch = useDispatch();
   const [sdkReady, setSdkReady] = useState(false);
+
+  const dispatch = useDispatch();
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
@@ -32,25 +37,21 @@ const OrderScreen = () => {
   const { userInfo } = userLogin;
 
   if (!loading) {
-    // Calculate Price
+    //   Calculate prices
     const addDecimals = (num) => {
       return (Math.round(num * 100) / 100).toFixed(2);
     };
 
     order.itemsPrice = addDecimals(
-      order.orderItems.reduce(
-        (acc, item) => acc + item.price * item.qty,
-
-        0
-      )
+      order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
     );
-    order.shippingPrice = addDecimals(order.itemsPrice > 100 ? 0 : 100);
   }
 
   useEffect(() => {
     if (!userInfo) {
       history("/login");
     }
+
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get("/api/config/paypal");
       const script = document.createElement("script");
@@ -63,7 +64,7 @@ const OrderScreen = () => {
       document.body.appendChild(script);
     };
 
-    if (!order || successPay || successDeliver) {
+    if (!order || successPay || successDeliver || order._id !== orderId) {
       dispatch({ type: ORDER_PAY_RESET });
       dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(orderId));
@@ -74,11 +75,11 @@ const OrderScreen = () => {
         setSdkReady(true);
       }
     }
-  }, [dispatch, orderId, successPay, successDeliver, order, userInfo, history]);
+  }, [dispatch, orderId, userInfo, history, successPay, successDeliver, order]);
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult);
-    dispatch(deliverOrder(orderId, paymentResult));
+    dispatch(payOrder(orderId, paymentResult));
   };
 
   const deliverHandler = () => {
@@ -91,18 +92,17 @@ const OrderScreen = () => {
     <Message variant="danger">{error}</Message>
   ) : (
     <>
-      <h1>Order ${order._id}</h1>
+      <h1>Order {order._id}</h1>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
-                <strong>Name: </strong>
-                {order.user.name}
+                <strong>Name: </strong> {order.user.name}
               </p>
               <p>
-                <strong>Email: </strong>
+                <strong>Email: </strong>{" "}
                 <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
               </p>
               <p>
@@ -113,7 +113,7 @@ const OrderScreen = () => {
               </p>
               {order.isDelivered ? (
                 <Message variant="success">
-                  Delivered On ${order.deliveredAt}
+                  Delivered on {order.deliveredAt}
                 </Message>
               ) : (
                 <Message variant="danger">Not Delivered</Message>
@@ -127,32 +127,43 @@ const OrderScreen = () => {
                 {order.paymentMethod}
               </p>
               {order.isPaid ? (
-                <Message variant="success">Paid On ${order.paidAt}</Message>
+                <Message variant="success">Paid on {order.paidAt}</Message>
               ) : (
                 <Message variant="danger">Not Paid</Message>
               )}
             </ListGroup.Item>
-            {order.orderItems.length === 0 ? (
-              <Message>Order is empty</Message>
-            ) : (
-              <ListGroup variant="flush">
-                {order.orderItems.map((item, index) => (
-                  <ListGroup.Item key={index}>
-                    <Row>
-                      <Col md={1}>
-                        <Image src={item.image} alt={item.name} fluid rounded />
-                      </Col>
-                      <Col>
-                        <Link to={`product/${item.product}`}>{item.name}</Link>
-                      </Col>
-                      <Col md={4}>
-                        {item.qty}* {item.price} = {item.qty * item.price}
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            )}
+
+            <ListGroup.Item>
+              <h2>Order Items</h2>
+              {order.orderItems.length === 0 ? (
+                <Message>Order is empty</Message>
+              ) : (
+                <ListGroup variant="flush">
+                  {order.orderItems.map((item, index) => (
+                    <ListGroup.Item key={index}>
+                      <Row>
+                        <Col md={1}>
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fluid
+                            rounded
+                          />
+                        </Col>
+                        <Col>
+                          <Link to={`/product/${item.product}`}>
+                            {item.name}
+                          </Link>
+                        </Col>
+                        <Col md={4}>
+                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              )}
+            </ListGroup.Item>
           </ListGroup>
         </Col>
         <Col md={4}>
@@ -209,7 +220,7 @@ const OrderScreen = () => {
                       className="btn btn-block w-100"
                       onClick={deliverHandler}
                     >
-                      Mark as Delivered
+                      Mark As Delivered
                     </Button>
                   </ListGroup.Item>
                 )}

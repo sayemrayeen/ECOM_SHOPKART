@@ -18,7 +18,7 @@ const Header = () => {
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>ProShop</Navbar.Brand>
+            <Navbar.Brand>ShopKart</Navbar.Brand>
           </LinkContainer>
           <SearchBox />
           <Nav className="ml-auto">

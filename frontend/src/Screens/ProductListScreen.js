@@ -16,16 +16,13 @@ import { useParams } from "react-router-dom";
 
 const ProductListScreen = () => {
   const history = useNavigate();
-  const dispatch = useDispatch();
-
   const { pageNumber } = useParams();
   const pageNumbers = pageNumber;
 
+  const dispatch = useDispatch();
+
   const productList = useSelector((state) => state.productList);
   const { loading, error, products, page, pages } = productList;
-
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
 
   const productDelete = useSelector((state) => state.productDelete);
   const {
@@ -41,6 +38,10 @@ const ProductListScreen = () => {
     success: successCreate,
     product: createdProduct,
   } = productCreate;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET });
 
@@ -58,8 +59,8 @@ const ProductListScreen = () => {
     history,
     userInfo,
     successDelete,
-    createdProduct,
     successCreate,
+    createdProduct,
     pageNumbers,
   ]);
 
@@ -72,13 +73,14 @@ const ProductListScreen = () => {
   const createProductHandler = () => {
     dispatch(createProduct());
   };
+
   return (
     <>
       <Row className="align-items-center">
         <Col>
           <h1>Products</h1>
         </Col>
-        <Col className="text-center">
+        <Col className="text-right">
           <Button className="my-3" onClick={createProductHandler}>
             <i className="fas fa-plus"></i> Create Product
           </Button>
@@ -131,11 +133,10 @@ const ProductListScreen = () => {
               ))}
             </tbody>
           </Table>
-          <Paginate page={page} pages={pages} isAdmin={true} />
+          <Paginate pages={pages} page={page} isAdmin={true} />
         </>
       )}
     </>
   );
 };
-
 export default ProductListScreen;

@@ -12,7 +12,7 @@ import ShippingScreen from "./Screens/ShippingScreen";
 import PaymentScreen from "./Screens/PayementScreen";
 import PlaceOrderScreen from "./Screens/PlaceOrderScreen";
 import OrderScreen from "./Screens/OrderScreen";
-import UserListScreen from "./Components/UserListScreen";
+import UserListScreen from "./Screens/UserListScreen";
 import UserEditScreen from "./Screens/UserEditScreen";
 import ProductListScreen from "./Screens/ProductListScreen";
 import ProductEditScreen from "./Screens/ProductEditScreen";
@@ -25,29 +25,18 @@ function App() {
       <main className="py-3">
         <Container>
           <Routes>
-            <Route path="/shipping" element={<ShippingScreen />} exact />
-            <Route path="/payment" element={<PaymentScreen />} exact />
-            <Route path="/placeorder" element={<PlaceOrderScreen />} exact />
-            <Route path="/order/:id" element={<OrderScreen />} exact />
-            <Route path="/profile" element={<ProfileScreen />} exact />
-            <Route path="/login" element={<LoginScreen />} exact />
-            <Route path="/register" element={<RegisterScreen />} exact />
-            <Route path="/" element={<HomeScreen />} exact />
-            <Route path="/page/:pageNumber" element={<HomeScreen />} exact />
-            <Route path="/search/:keyword" element={<HomeScreen />} exact />
-            <Route
-              path="/search/:keyword/page/:pageNumber"
-              element={<HomeScreen />}
-              exact
-            />
-            <Route path="/product/:id" element={<ProductScreen />} exact />
+            <Route path="/order/:id" element={<OrderScreen />} />
+            <Route path="/shipping" element={<ShippingScreen />} />
+            <Route path="/payment" element={<PaymentScreen />} />
+            <Route path="/placeorder" element={<PlaceOrderScreen />} />
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
+            <Route path="/profile" element={<ProfileScreen />} />
+            <Route path="/product/:id" element={<ProductScreen />} />
+            <Route path="/cart/:id" element={<CartScreen />} />
             <Route path="/cart" element={<CartScreen />} />
             <Route path="/admin/userlist" element={<UserListScreen />} />
             <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
-            <Route
-              path="/admin/product/:id/edit"
-              element={<ProductEditScreen />}
-            />
             <Route
               path="/admin/productlist"
               element={<ProductListScreen />}
@@ -58,8 +47,19 @@ function App() {
               element={<ProductListScreen />}
               exact
             />
+            <Route
+              path="/admin/product/:id/edit"
+              element={<ProductEditScreen />}
+            />
             <Route path="/admin/orderlist" element={<OrderListScreen />} />
-            <Route path="/cart/:id" element={<CartScreen />} />
+            <Route path="/search/:keyword" element={<HomeScreen />} exact />
+            <Route path="/page/:pageNumber" element={<HomeScreen />} exact />
+            <Route
+              path="/search/:keyword/page/:pageNumber"
+              element={<HomeScreen />}
+              exact
+            />
+            <Route path="/" element={<HomeScreen />} exact />
           </Routes>
         </Container>
       </main>

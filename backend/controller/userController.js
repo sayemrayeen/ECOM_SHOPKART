@@ -2,12 +2,11 @@ import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
 
-// @desc auth user & get token
-// @route POST /api/users/login
-// @access public
+// @desc    Auth user & get token
+// @route   POST /api/users/login
+// @access  Public
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  //   res.send({ email, password, });
 
   const user = await User.findOne({ email });
 
@@ -50,6 +49,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      token: generateToken(user._id),
     });
   } else {
     res.status(400);
@@ -112,7 +112,7 @@ const getUsers = asyncHandler(async (req, res) => {
   res.json(users);
 });
 
-// @desc    delete user
+// @desc    Delete user
 // @route   DELETE /api/users/:id
 // @access  Private/Admin
 const deleteUser = asyncHandler(async (req, res) => {
@@ -127,8 +127,8 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Get user
-// @route   GET /api/users
+// @desc    Get user by ID
+// @route   GET /api/users/:id
 // @access  Private/Admin
 const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).select("-password");
@@ -143,14 +143,14 @@ const getUserById = asyncHandler(async (req, res) => {
 
 // @desc    Update user
 // @route   PUT /api/users/:id
-// @access  Private/admin
+// @access  Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
-    user.isAdmin = req.body.isAdmin || user.isAdmin;
+    user.isAdmin = req.body.isAdmin;
 
     const updatedUser = await user.save();
 
@@ -168,8 +168,8 @@ const updateUser = asyncHandler(async (req, res) => {
 
 export {
   authUser,
-  getUserProfile,
   registerUser,
+  getUserProfile,
   updateUserProfile,
   getUsers,
   deleteUser,

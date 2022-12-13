@@ -17,12 +17,12 @@ import Message from "../Components/Message";
 const CartScreen = () => {
   const history = useNavigate();
   const location = useLocation();
-
   const { id } = useParams();
-  const dispatch = useDispatch();
-  const productId = id;
 
   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
+
+  const dispatch = useDispatch();
+  const productId = id;
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
@@ -39,7 +39,6 @@ const CartScreen = () => {
   };
 
   const checkoutHandler = () => {
-    // history("/login?redirect=shipping");
     history("/login" ? "/shipping" : "/login");
   };
 
@@ -49,7 +48,7 @@ const CartScreen = () => {
         <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
           <Message>
-            Your cart is empty <Link to="/">Go back</Link>
+            Your cart is empty <Link to="/">Go Back</Link>
           </Message>
         ) : (
           <ListGroup variant="flush">
@@ -57,7 +56,7 @@ const CartScreen = () => {
               <ListGroup.Item key={item.product}>
                 <Row>
                   <Col md={2}>
-                    <Image src={item.image} alt={item.image} fluid rounded />
+                    <Image src={item.image} alt={item.name} fluid rounded />
                   </Col>
                   <Col md={3}>
                     <Link to={`/product/${item.product}`}>{item.name}</Link>
@@ -100,8 +99,8 @@ const CartScreen = () => {
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>
-                Subtotal({cartItems.reduce((acc, item) => acc + item.qty, 0)}
-                )items{" "}
+                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                items
               </h2>
               $
               {cartItems
@@ -115,7 +114,7 @@ const CartScreen = () => {
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >
-                Proceed to checkout
+                Proceed To Checkout
               </Button>
             </ListGroup.Item>
           </ListGroup>

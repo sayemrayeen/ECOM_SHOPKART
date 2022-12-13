@@ -7,6 +7,7 @@ import Message from "../Components/Message";
 import Loader from "../Components/Loader";
 import { getUserDetails, updateUserProfile } from "../actions/userAction";
 import { listMyOrders } from "../actions/orderActions";
+import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 
 const ProfileScreen = () => {
   const history = useNavigate();
@@ -35,6 +36,7 @@ const ProfileScreen = () => {
       history("/login");
     } else {
       if (!user || !user.name || success) {
+        dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
         dispatch(listMyOrders());
       } else {
@@ -42,14 +44,13 @@ const ProfileScreen = () => {
         setEmail(user.email);
       }
     }
-  }, [dispatch, history, success, userInfo, user]);
+  }, [dispatch, history, userInfo, user, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
-      //DISPATCH UPDATE PROFILE
       dispatch(updateUserProfile({ id: user._id, name, email, password }));
     }
   };
@@ -59,9 +60,8 @@ const ProfileScreen = () => {
       <Col md={3}>
         <h2>User Profile</h2>
         {message && <Message variant="danger">{message}</Message>}
-        {error && <Message variant="danger">{error}</Message>}
-        {success && <Message variant="success">Profile Updated</Message>}
         {}
+        {success && <Message variant="success">Profile Updated</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
@@ -108,7 +108,7 @@ const ProfileScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Button className="my-3" type="submit" variant="primary">
+            <Button type="submit" variant="primary">
               Update
             </Button>
           </Form>
@@ -153,7 +153,7 @@ const ProfileScreen = () => {
                     )}
                   </td>
                   <td>
-                    <LinkContainer to={`/orders/${order._id}`}>
+                    <LinkContainer to={`/order/${order._id}`}>
                       <Button className="btn-sm" variant="light">
                         Details
                       </Button>

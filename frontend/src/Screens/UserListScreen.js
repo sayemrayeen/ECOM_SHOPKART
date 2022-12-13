@@ -26,13 +26,14 @@ const UserListScreen = () => {
     } else {
       history("/login");
     }
-  }, [dispatch, history, userInfo, successDelete]);
+  }, [dispatch, history, successDelete, userInfo]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure")) {
       dispatch(deleteUser(id));
     }
   };
+
   return (
     <>
       <h1>Users</h1>

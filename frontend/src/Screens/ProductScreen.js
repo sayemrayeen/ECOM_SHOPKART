@@ -22,15 +22,17 @@ import { useParams } from "react-router-dom";
 import Meta from "../Components/Meta";
 
 const ProductScreen = () => {
+  let history = useNavigate();
+  const { id } = useParams();
+
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
 
-  let history = useNavigate();
-  const { id } = useParams();
   const dispatch = useDispatch();
+
   const productDetails = useSelector((state) => state.productDetails);
-  const { loading, product, error } = productDetails;
+  const { loading, error, product } = productDetails;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -51,7 +53,7 @@ const ProductScreen = () => {
       dispatch(listProductDetails(id));
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
-  }, [dispatch, id, product, successProductReview]);
+  }, [dispatch, id, product._id, successProductReview]);
 
   const addToCartHandler = () => {
     history(`/cart/${id}?qty=${qty}`);
@@ -212,7 +214,6 @@ const ProductScreen = () => {
                         disabled={loadingProductReview}
                         type="submit"
                         variant="primary"
-                        className="my-3"
                       >
                         Submit
                       </Button>

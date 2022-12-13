@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
@@ -22,7 +23,7 @@ import {
   PRODUCT_TOP_FAIL,
 } from "../constants/productConstants";
 
-import axios from "axios";
+import { logout } from "./userAction";
 
 export const listProducts =
   (keyword = "", pageNumber = "") =>
@@ -34,12 +35,15 @@ export const listProducts =
         `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
       );
 
-      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+      dispatch({
+        type: PRODUCT_LIST_SUCCESS,
+        payload: data,
+      });
     } catch (error) {
       dispatch({
         type: PRODUCT_LIST_FAIL,
         payload:
-          error.message && error.response.data.message
+          error.response && error.response.data.message
             ? error.response.data.message
             : error.message,
       });
@@ -52,12 +56,15 @@ export const listProductDetails = (id) => async (dispatch) => {
 
     const { data } = await axios.get(`/api/products/${id}`);
 
-    dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
+    dispatch({
+      type: PRODUCT_DETAILS_SUCCESS,
+      payload: data,
+    });
   } catch (error) {
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
       payload:
-        error.message && error.response.data.message
+        error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
     });
@@ -86,12 +93,16 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
       type: PRODUCT_DELETE_SUCCESS,
     });
   } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
     dispatch({
       type: PRODUCT_DELETE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -119,12 +130,16 @@ export const createProduct = () => async (dispatch, getState) => {
       payload: data,
     });
   } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
     dispatch({
       type: PRODUCT_CREATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -156,13 +171,18 @@ export const updateProduct = (product) => async (dispatch, getState) => {
       type: PRODUCT_UPDATE_SUCCESS,
       payload: data,
     });
+    dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
     dispatch({
       type: PRODUCT_UPDATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
@@ -191,21 +211,23 @@ export const createProductReview =
         type: PRODUCT_CREATE_REVIEW_SUCCESS,
       });
     } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      if (message === "Not authorized, token failed") {
+        dispatch(logout());
+      }
       dispatch({
         type: PRODUCT_CREATE_REVIEW_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
+        payload: message,
       });
     }
   };
 
 export const listTopProducts = () => async (dispatch) => {
   try {
-    dispatch({
-      type: PRODUCT_TOP_REQUEST,
-    });
+    dispatch({ type: PRODUCT_TOP_REQUEST });
 
     const { data } = await axios.get(`/api/products/top`);
 

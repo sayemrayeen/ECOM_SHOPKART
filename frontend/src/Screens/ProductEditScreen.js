@@ -51,7 +51,30 @@ const ProductEditScreen = () => {
         setDescription(product.description);
       }
     }
-  }, [dispatch, product, history, productId, successUpdate]);
+  }, [dispatch, history, productId, product, successUpdate]);
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      const { data } = await axios.post("/api/upload", formData, config);
+
+      setImage(data);
+      setUploading(false);
+    } catch (error) {
+      console.error(error);
+      setUploading(false);
+    }
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -69,31 +92,9 @@ const ProductEditScreen = () => {
     );
   };
 
-  const uploadFileHandler = async (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("image", file);
-    setUploading(true);
-
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-
-      const { data } = await axios.post("/api/upload", formData, config);
-      setImage(data);
-      setUploading(false);
-    } catch (error) {
-      console.error(error);
-      setUploading(false);
-    }
-  };
   return (
     <>
       <Link to="/admin/productlist" className="btn btn-light my-3">
-        {" "}
         Go Back
       </Link>
       <FormContainer>
@@ -115,6 +116,7 @@ const ProductEditScreen = () => {
                 onChange={(e) => setName(e.target.value)}
               ></Form.Control>
             </Form.Group>
+
             <Form.Group controlId="price">
               <Form.Label>Price</Form.Label>
               <Form.Control
@@ -133,15 +135,25 @@ const ProductEditScreen = () => {
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
-              <Form.Control
-                type="file"
+              <Form.File
+                id="image-file"
                 label="Choose File"
-                custom="true"
+                custom
                 onChange={uploadFileHandler}
-              ></Form.Control>
+              ></Form.File>
               {uploading && <Loader />}
             </Form.Group>
-            {uploading && <Loader />}
+
+            <Form.Group controlId="brand">
+              <Form.Label>Brand</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter brand"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
             <Form.Group controlId="countInStock">
               <Form.Label>Count In Stock</Form.Label>
               <Form.Control
@@ -172,7 +184,7 @@ const ProductEditScreen = () => {
               ></Form.Control>
             </Form.Group>
 
-            <Button type="submit" className="my-3" variant="primary">
+            <Button type="submit" variant="primary">
               Update
             </Button>
           </Form>
